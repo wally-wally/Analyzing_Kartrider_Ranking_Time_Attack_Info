@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'pages/stylesheets/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">Data_Analysis</h1>
+  <hr>
+  {% if result == '1' %}
+  <div class="mx-auto">
+    <img src="{% static 'pages/images/car_rate.png' %}" alt="타임어택에서 사용된 차량의 비율" width="1100px" height="720px">
+  </div>
+  {% elif result == '2' %}
+  <div class="mx-auto">
+    <img src="{% static 'pages/images/rank_distribution.png' %}" alt="타임어택 순위 분포도" width="1100px" height="500px">
+  </div>
+  {% else %}
+  <h3>{{ result }}</h3>
+  {% endif %}<br>
+  <a href="/kart_data/"><button type="button" class="btn btn-success">Select Menu</button></a>
+{% endblock  %}

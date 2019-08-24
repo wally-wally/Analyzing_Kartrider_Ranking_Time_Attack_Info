@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'pages/stylesheets/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">Write basic information for data analysis</h1>
+  <hr>
+  <form action="/kart_data/analysis_data/" method="POST">
+    {% csrf_token %}
+    <div class="form-group h5">
+      <label for="user_nickname">user_nickname</label>
+      <input type="text" name="user_nickname" class="form-control" id="user_nickname">
+    </div>
+    <br>
+
+    <div class="form-group h5">
+      <label for="speed">speed</label>
+      <select multiple class="form-control" name="speed" id="speed">
+        <option>S0(보통)</option>
+        <option>S1(빠름)</option>
+        <option>S2(매우빠름)</option>
+        <option>S3(가장빠름)</option>
+      </select>
+    </div>
+    <br>
+
+    <div class="form-group h5">
+      <label for="Select_data">Select data what you want</label>
+      <select class="form-control" name="Select_data" id="Select_data">
+        <option>1.타임어택에서 사용된 차량의 비율 -- 파이 차트</option>
+        <option>2.타임어택 순위 분포도 -- 막대 그래프</option>
+      </select>
+    </div>
+    <br>
+
+    <div class="form-group h5">
+      <label for="divisor">[Only select data '2']rank interval</label>
+      <input type="number" name="divisor" class="form-control" id="divisor" min="10" max="100" step="10">
+    </div>
+    <br>
+
+    <input class="btn btn-primary h6" type="submit" value="Send">
+    <a href="/kart_data/"><button type="button" class="btn btn-success h6">Back</button></a>
+
+  </form>
+{% endblock  %}

@@ -1,0 +1,21 @@
+h1 {
+  color: crimson;
+  font-family: 'Jua', sans-serif;
+}
+
+h3 {
+  font-family: 'Do Hyeon', sans-serif;
+}
+
+.navbar-light .navbar-brand {
+  color: rebeccapurple;
+  font-family: 'Do Hyeon', sans-serif;
+}
+
+div .mx-auto {
+  margin: 0 auto;
+}
+
+.container > .accordion {
+  font-family: 'Sunflower', sans-serif;
+}
