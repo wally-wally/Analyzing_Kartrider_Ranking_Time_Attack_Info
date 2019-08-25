@@ -41,7 +41,7 @@ def collect_situation(request):
             re_url = f'http://kart.nexon.com/Garage/Record?oidUser={oidUser}&gpage=1&tpage={i}&lc={adjust_num}'
             re_html = requests.get(re_url).text
             re_soup = BeautifulSoup(re_html, 'html.parser')
-            data = re_soup.select_one('#CntTime > div > div.CntTime3 > div.CntTime2Sec > table > tbody > tr:nth-child(1) > td.CntTime2L4 > span.TxtBlu').text
+            # data = re_soup.select_one('#CntTime > div > div.CntTime3 > div.CntTime2Sec > table > tbody > tr:nth-child(1) > td.CntTime2L4 > span.TxtBlu').text
         except AttributeError:
             break
 
@@ -124,6 +124,7 @@ def analysis_data(request):
             plt.pie(car_count, labels=car_kind, autopct='%1.f%%', startangle=90, textprops={'fontsize': 16})
             plt.title('타임어택에서 사용된 차량의 비율', fontsize=20)
             plt.legend(fontsize=11)
+            plt.savefig(f'data_graph_img/car_rate_{user_nickname}_S{select_speed}.png')
             plt.savefig(f'pages/static/pages/images/car_rate.png')
             result = '1'
         else: # 타임어택 순위 분포도
@@ -136,6 +137,7 @@ def analysis_data(request):
             rank_count = [0] * ((max_rank//divisor)) if not max_rank % divisor else [0] * ((max_rank//divisor)+1)
             for i in range(divisor, max_rank + divisor, divisor):
                 x_value.append(f'~{i}위')
+            x_value[-1] = f'{i - divisor + 1}위~'
 
             for rank in rank_list:
                 if not rank % divisor:
@@ -152,6 +154,7 @@ def analysis_data(request):
             plt.ylabel('rank_count', fontsize=15)
             plt.title('타임어택 순위 분포도', fontsize=20)
             # plt.xticks(index, x_value, fontsize=15)
+            plt.savefig(f'data_graph_img/rank_distribution_{user_nickname}_S{select_speed}_(gap_{divisor}).png')
             plt.savefig(f'pages/static/pages/images/rank_distribution.png')
             result = '2'
     else: # csv 파일이 존재하지 않는 경우
