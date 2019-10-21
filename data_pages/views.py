@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pprint import pprint
 from bs4 import BeautifulSoup
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def index(request):
     return render(request, 'data_pages/index.html')
 
 
 def collect_form(request):
-    return render(request, 'data_pages/collect_form.html')
+    return render(request, 'data_pages/form.html')
 
 
 def collect_result(request):
@@ -72,11 +72,11 @@ def collect_result(request):
     
     context = {'result': result,}
 
-    return render(request, 'data_pages/collect_result.html', context)
+    return render(request, 'data_pages/result.html', context)
 
 
 def analysis_form(request):
-    return render(request, 'data_pages/analysis_form.html')
+    return render(request, 'data_pages/form.html')
 
 
 # analysis_data 01. 랭킹 타임어택에서 사용된 차량의 비율 -- 파이 차트
@@ -169,4 +169,7 @@ def analysis_result(request):
         'result': result,
     }
 
-    return render(request, 'data_pages/analysis_result.html', context)
+    return render(request, 'data_pages/result.html', context)
+
+def back_analysis_menu(request):
+    return redirect('data_pages:analysis_form')

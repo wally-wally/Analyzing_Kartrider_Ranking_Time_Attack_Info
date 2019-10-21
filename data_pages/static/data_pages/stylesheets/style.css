@@ -17,5 +17,9 @@ div .mx-auto {
 }
 
 .container > .accordion {
-  font-family: 'Sunflower', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.go-to-kartrider {
+  font-family: 'Noto Sans KR', sans-serif;
 }

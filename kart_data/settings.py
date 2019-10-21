@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'data_pages.apps.DataPagesConfig',
+    'accounts.apps.AccountsConfig',
     'bootstrap4',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -1,31 +1,78 @@
 {% load bootstrap4 %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   {% bootstrap_css %}
-  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua|Sunflower:300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua|Noto+Sans+KR|Sunflower:300&display=swap" rel="stylesheet">
   <title>Kartrider Data Center</title>
+  <link rel="stylesheet" href="{% static 'data_pages/stylesheets/style.css' %}">
   {% block css %}
   {% endblock  %}
 </head>
+
 <body>
-  <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-    <div class="navbar-brand">Kartrider Data Center (made by wally-wally)</div>
-    <div class="collapse navbar-collapse d-flex justify-content-end align-items-center d-sm-none" id="navbarNav">
-      <ul class="navbar-nav d-none d-sm-flex">
-        <li class="mx-2">
-          <a class="nav-link" href="https://github.com/wally-wally" target="_blank">Go to 'wally-wally GitHub'</a>
-        </li>
-        <li class="mx-2">
-          <a class="nav-link" href="mailto:wallys0213@gmail.com">Send e-mail to wally-wally</a>
-        </li>
-      </ul>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Kartrider Data Center(ver 1.1)</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      {% if user.is_authenticated %}
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" style="font-family: 'Sunflower';">
+              Account Management
+            </a>
+            <div class="dropdown-menu menu-b" aria-labelledby="navbarDropdown" style="font-family: 'Sunflower';">
+              <a class="dropdown-item" href="{% url 'accounts:update' %}">정보수정</a>
+              <a class="dropdown-item" href="{% url 'accounts:change_password' %}">비번변경</a>
+              <a class="dropdown-item" href="{% url 'accounts:logout' %}">로그아웃</a>
+              <div class="dropdown-divider"></div>
+              <form action="{% url 'accounts:delete' %}" method="POST" style="display: inline;" onclick="return confirm('정말로 회원을 탈퇴하시겠습니까?')">
+                {% csrf_token %}
+                <input type="submit" value="회원탈퇴" class="dropdown-item">
+              </form>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link menu-c" href="{% url 'data_pages:index' %}" style="font-family: 'Sunflower';">Back</a>
+          </li>
+        </ul>
+      {% else %}
+        <ul class="navbar-nav mr-auto menu-d">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+          </li>
+        </ul>
+      {% endif %}
+      <div class="collapse navbar-collapse d-flex justify-content-end align-items-center d-sm-none" id="navbarNav">
+        <ul class="navbar-nav d-none d-sm-flex">
+          <li class="mx-2">
+            <a class="nav-link" href="https://github.com/wally-wally" target="_blank">Go to 'wally-wally' GitHub</a>
+          </li>
+          <li class="mx-2">
+            {% if user.is_authenticated %}
+              <li class="my-2 my-sm-0" style="font-size: 1.25rem;">Hello, <b>{{ user.username }}</b></li>
+            {% else %}
+              <li class="my-2 my-sm-0" style="font-size: 1.25rem;">Hello, Guest</li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
+
   <br>
   <div class="container">
     {% block content %}
@@ -33,4 +80,5 @@
   </div>
   {% bootstrap_javascript jquery='full' %}
 </body>
+
 </html>

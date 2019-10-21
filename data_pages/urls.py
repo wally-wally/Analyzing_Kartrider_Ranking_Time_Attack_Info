@@ -8,4 +8,5 @@ urlpatterns = [
     path('collect/result', views.collect_result, name='collect_result'),
     path('analysis/', views.analysis_form, name='analysis_form'),
     path('analysis/result', views.analysis_result, name='analysis_result'),
+    path('analysis/backtoanalysismenu', views.back_analysis_menu, name='back_analysis_menu'),
 ]
