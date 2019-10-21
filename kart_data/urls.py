@@ -1,4 +1,4 @@
-"""kartrider_data_analysis URL Configuration
+"""kart_data URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('kart_data/', include('pages.urls')),
+    path('data_pages/', include('data_pages.urls')),
     path('admin/', admin.site.urls),
 ]

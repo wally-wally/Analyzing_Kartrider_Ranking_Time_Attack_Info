@@ -5,6 +5,7 @@ chardet==3.0.4
 colorama==0.4.1
 cycler==0.10.0
 Django==2.2.4
+django-bootstrap4==1.0.1
 idna==2.8
 isort==4.3.21
 kiwisolver==1.1.0

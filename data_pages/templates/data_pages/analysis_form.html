@@ -1,14 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'data_pages/base.html' %}
 {% load static %}
 
 {% block css %}
-  <link rel="stylesheet" href="{% static 'pages/stylesheets/style.css' %}">
+  <link rel="stylesheet" href="{% static 'data_pages/stylesheets/style.css' %}">
 {% endblock %}
 
 {% block content %}
   <h1 class="text-center">Write basic information for data analysis</h1>
   <hr>
-  <form action="/kart_data/analysis_data/" method="POST">
+  <form action="{% url 'data_pages:analysis_result' %}" method="POST">
     {% csrf_token %}
     <div class="form-group h5">
       <label for="user_nickname">user_nickname</label>
@@ -43,7 +43,7 @@
     <br>
 
     <input class="btn btn-primary h6" type="submit" value="Send">
-    <a href="/kart_data/"><button type="button" class="btn btn-success h6">Back</button></a>
+    <a href="{% url 'data_pages:index' %}"><button type="button" class="btn btn-success h6">Back</button></a>
 
   </form>
 {% endblock  %}

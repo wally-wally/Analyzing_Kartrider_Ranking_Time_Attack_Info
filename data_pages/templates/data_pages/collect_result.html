@@ -1,0 +1,13 @@
+{% extends 'data_pages/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'data_pages/stylesheets/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">Collect Data Situation</h1>
+  <hr>
+  <h3>{{ result }}</h3><br>
+  <a href="{% url 'data_pages:index' %}"><button type="button" class="btn btn-success">Select Menu</button></a>
+{% endblock %}
