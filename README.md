@@ -69,3 +69,10 @@
   - template 재구성
     - base templates `data_pages` app의 templates 폴더로 이동
     - `resolver`를 이용하여 `data_pages`의 `collect_form.html`, `analysis_form.html`을 `form.html` templates으로 합치고,  `collect_result.html`, `analysis_result.html`을 `result.html` templates으로 합침
+
+<br>
+
+- `2019/10/23` (ver 1.2)
+  - 추출한 데이터를 저장할 수 있는 `Data Storage` 데모 버전 구현
+  - 추출한 데이터의 종류, 유저 닉네임, 채널명, 그래프를 볼 수 있으며 필요에 따라 데이터 삭제도 가능
+  - 추후 데이터별 이미지를 각각 저장할 수 있도록 구현할 계획

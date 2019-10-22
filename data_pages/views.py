@@ -5,7 +5,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from pprint import pprint
 from bs4 import BeautifulSoup
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from .models import DataPage
+from .forms import DataPageForm
 
 def index(request):
     return render(request, 'data_pages/index.html')
@@ -67,12 +71,13 @@ def collect_result(request):
             for value in time_attack_dict.values():
                 writer.writerow(value)
         result = '데이터 수집이 완료되었습니다.'
+        context = {'result': result,}
+        return render(request, 'data_pages/result.html', context)
     elif time_attack_dict == {}:
         result = f'S{select_speed}의 타임어택을 진행하지 않았습니다.'
+        context = {'result': result,}
+        return render(request, 'data_pages/result.html', context)
     
-    context = {'result': result,}
-
-    return render(request, 'data_pages/result.html', context)
 
 
 def analysis_form(request):
@@ -96,9 +101,10 @@ def func_01(cars, nickname, speed): # arguments : car_list, user_nickname, speed
     plt.pie(car_count, labels=car_kind, autopct='%1.f%%', startangle=90, textprops={'fontsize': 16})
     plt.title('타임어택에서 사용된 차량의 비율', fontsize=20)
     plt.legend(fontsize=11)
+    img_url = 'data_pages/images/car_rate.png'
     plt.savefig(f'data_img/car_rate_{nickname}_S{speed}.png')
-    plt.savefig(f'data_pages/static/data_pages/images/car_rate.png')
-    return '1' # 어떤 형태의 데이터를 추출했는지 확인하는 변수
+    plt.savefig(f'data_pages/static/{img_url}')
+    return '1', img_url  # 어떤 형태의 데이터를 추출했는지 확인하는 변수
 
 # analysis_data 02. 랭킹 타임어택 순위 분포도 -- 막대 그래프
 def func_02(ranks, divisor, nickname, speed): # arguments : rank_list, user_nickname, speed, chice_type
@@ -127,49 +133,85 @@ def func_02(ranks, divisor, nickname, speed): # arguments : rank_list, user_nick
     plt.ylabel('rank_count', fontsize=15)
     plt.title('타임어택 순위 분포도', fontsize=20)
     # plt.xticks(index, x_value, fontsize=15)
+    img_url = 'data_pages/images/rank_distribution.png'
     plt.savefig(f'data_img/rank_distribution_{nickname}_S{speed}_(gap_{divisor}).png')
-    plt.savefig(f'data_pages/static/data_pages/images/rank_distribution.png')
-    return '2'
+    plt.savefig(f'data_pages/static/{img_url}')
+    return '2', img_url
 
 
 def analysis_result(request):
-    rank_list, car_list = [], []
-    csv_file_exist = 1 # 해당 채널의 csv 파일이 있는지 확인하기 위한 변수
-    
-    # form 태그로 POST 방식으로 넘어논 데이터들 추출
-    user_nickname = request.POST.get('user_nickname')
-    speed = request.POST.get('speed')
-    choice_type = int(request.POST.get('Select_data')[0])
-    
-    select_speed = int(speed[1]) # string형의 speed 변수를 숫자 데이터만 추출하여 int형으로 변환
+    if request.method == 'POST':
+        rank_list, car_list = [], []
+        csv_file_exist = 1 # 해당 채널의 csv 파일이 있는지 확인하기 위한 변수
+        
+        # form 태그로 POST 방식으로 넘어논 데이터들 추출
+        user_nickname = request.POST.get('user_nickname')
+        speed = request.POST.get('speed')
+        choice_type = int(request.POST.get('Select_data')[0])
+        
+        select_speed = int(speed[1]) # string형의 speed 변수를 숫자 데이터만 추출하여 int형으로 변환
 
-    # csv 파일에서 순위 데이터와 차량 데이터를 추출하여 rank_list, car_list에 추가
-    try:
-        with open(f'timeattack_{user_nickname}_S{select_speed}.csv', newline='', encoding='utf-8') as f:
-            record_data = csv.DictReader(f)
-            for data in record_data:
-                rank_list.append(data['rank'])
-                car_list.append(data['car'])
-    # csv 파일이 없는 경우 체크 변수를 0으로 설정
-    except FileNotFoundError:
-        csv_file_exist = 0
+        # csv 파일에서 순위 데이터와 차량 데이터를 추출하여 rank_list, car_list에 추가
+        try:
+            with open(f'timeattack_{user_nickname}_S{select_speed}.csv', newline='', encoding='utf-8') as f:
+                record_data = csv.DictReader(f)
+                for data in record_data:
+                    rank_list.append(data['rank'])
+                    car_list.append(data['car'])
+        # csv 파일이 없는 경우 체크 변수를 0으로 설정
+        except FileNotFoundError:
+            csv_file_exist = 0
 
-    if csv_file_exist: # csv 파일이 존재하는 경우
-        if choice_type == 1:
-            result = func_01(car_list, user_nickname, select_speed)
-        else: # 타임어택 순위 분포도
-            divisor = int(request.POST.get('divisor')) # 2. 순위 분포도 gap 설정을 위한 변수
-            result = func_02(rank_list, divisor, user_nickname, select_speed)
-    else: # csv 파일이 존재하지 않는 경우
-        result = f'{user_nickname}님의 S{select_speed} 채널의 타임어택 기록 csv 파일이 없습니다.'
-    
-    context = {
-        'user_nickname': user_nickname,
-        'select_speed': select_speed,
-        'result': result,
-    }
+        if csv_file_exist: # csv 파일이 존재하는 경우
+            if choice_type == 1:
+                result, img_url = func_01(car_list, user_nickname, select_speed)
+                title = '랭킹 타임어택에서 사용된 차량의 비율'
+            else: # 타임어택 순위 분포도
+                divisor = int(request.POST.get('divisor')) # 2. 순위 분포도 gap 설정을 위한 변수
+                result, img_url = func_02(rank_list, divisor, user_nickname, select_speed)
+                title = '랭킹 타임어택 순위 분포도'
+            datapage = DataPage(title=title, nickname=user_nickname, speed=str(select_speed), img_url=img_url)
+            datapage.save()
+            return redirect('data_pages:storage_index')
+        else: # csv 파일이 존재하지 않는 경우
+            title = img_url = None
+            result = f'{user_nickname}님의 S{select_speed} 채널의 타임어택 기록 csv 파일이 없습니다.'
+        
+            context = {
+                'title': title,
+                'nickname': user_nickname,
+                'speed': select_speed,
+                'result': result,
+                'img_url': img_url,
+            }
 
-    return render(request, 'data_pages/result.html', context)
+            return render(request, 'data_pages/result.html', context)
+    return redirect('data_pages:storage_index')
+
+def back_collect_menu(request):
+    return redirect('data_pages:collect_form')
 
 def back_analysis_menu(request):
     return redirect('data_pages:analysis_form')
+
+@login_required
+def storage_index(request):
+    visits_num = request.session.get('visits_num', 0)
+    request.session['visits_num'] = visits_num + 1
+    request.session.modified = True
+    datapages = DataPage.objects.all()
+    context = {'datapages': datapages, 'visits_num': visits_num,}
+    return render(request, 'data_pages/storage_index.html', context)
+
+def storage_detail(request, datapage_pk):
+    datapage = get_object_or_404(DataPage, pk=datapage_pk)
+    context = {'datapage': datapage,}
+    return render(request, 'data_pages/storage_detail.html', context)
+
+@login_required
+def storage_delete(request, datapage_pk):
+    if request.user.is_authenticated:
+        datapage = get_object_or_404(DataPage, pk=datapage_pk)
+        datapage.delete()
+        return redirect('data_pages:storage_index')
+    

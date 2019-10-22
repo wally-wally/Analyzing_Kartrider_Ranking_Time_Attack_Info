@@ -1,0 +1,23 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <p><b>{{ datapage.title }}</b></p>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><p>nickname: <b>{{ datapage.nickname }}</b></p></h5>
+    <p class="card-text">
+    {% if datapage.speed == '0' %}
+      <b>보통</b> 채널
+    {% elif datapage.speed == '1' %}
+      <b>빠름</b> 채널
+    {% elif datapage.speed == '2' %}
+      <b>매우빠름</b> 채널
+    {% else %}
+      <b>가장빠름</b> 채널
+    {% endif %}
+    <br>
+    </p>
+    <hr>
+    <a href="{{ datapage.get_absolute_url }}" class="btn btn-primary">DETAIL</a>
+    {# {% url 'datapage:storage_detail' datapage_pk %} #}
+  </div>
+</div>

@@ -1,0 +1,39 @@
+{% extends 'data_pages/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'data_pages/stylesheets/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">Data Detail</h1>
+  <hr>
+  <p>주제 : {{ datapage.title }}</p>
+  <p>닉네임 : {{ datapage.nickname }}</p>
+  {% if datapage.speed == '0' %}
+    <p>채널명 : <b>보통</b></p>
+  {% elif datapage.speed == '1' %}
+    <p>채널명 : <b>빠름</b></p>
+  {% elif datapage.speed == '2' %}
+    <p>채널명 : <b>매우빠름</b></p>
+  {% else %}
+    <p>채널명 : <b>가장빠름</b></p>
+  {% endif %}
+  <p>{{ datapage.result }}</p>
+  <p>데이터 생성 날짜 : {{ datapage.created_at|date:"SHORT_DATE_FORMAT" }}</p>
+  <div class="mx-auto">
+    {% if datapage.title == '랭킹 타임어택에서 사용된 차량의 비율' %}
+      <img src="{% static datapage.img_url %}" alt="랭킹 타임어택에서 사용된 차량의 비율" width="950px" height="560px">
+    {% else %}
+      <img src="{% static datapage.img_url %}" alt="랭킹 타임어택 순위 분포도" width="1100px" height="500px">
+    {% endif %}
+  </div>
+  <hr>
+  {% if user.is_authenticated %}
+    <form action="{% url 'data_pages:storage_delete' datapage.pk %}" method="POST", onclick="return confirm('진짜로 지우게??')" style="display: inline;">
+      {% csrf_token %}
+      <input type="submit" value="DELETE" class="btn btn-warning">
+    </form>
+  {% endif %}
+  <a href="{% url 'data_pages:storage_index' %}" class="btn btn-success">BACK</a>
+{% endblock  %}

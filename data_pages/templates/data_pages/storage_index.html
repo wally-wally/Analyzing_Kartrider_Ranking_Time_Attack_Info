@@ -1,0 +1,16 @@
+{% extends 'data_pages/base.html' %}
+
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'data_pages/stylesheets/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1 class="text-center">Kartrider Data Storage</h1>
+  <p><b>방문 횟수 : {{ visits_num }} {% if visits_num == 1 %} time {% else %} times{% endif %}</b></p>
+  <hr>
+  {% for datapage in datapages %}
+    {% include 'data_pages/_storage.html' %}
+  {% endfor %}
+{% endblock  %}
