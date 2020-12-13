@@ -14,41 +14,53 @@
 
 <br>
 
-## :two: Flow Chart
+## :two: Tech Stack
 
-![flow_chart](https://user-images.githubusercontent.com/52685250/63640446-666bf780-c6db-11e9-9810-c4c675cf00a7.jpg)
+:round_pushpin: <b>Programming Language</b> : `Python 3.7.4`
+
+:round_pushpin: <b>Frontend, Backend</b> : `Django 2.2.4`
+
+:round_pushpin: <b>Database</b> : `sqlite3`
+
+:round_pushpin: <b>Development Enviornment</b> : `Windows 10`
+
+:round_pushpin: <b>Using Editor</b> : `Visual Studio Code`
 
 <br>
 
 ## :three: Getting Started
 
-- 소스 코드 clone 받기
+:heavy_check_mark: <b>소스 코드 clone 받기</b>
 
 ```bash
 git clone https://github.com/wally-wally/Analyzing_Kartrider_Ranking_Time_Attack_Info.git
 ```
 
-- 가상환경 설정
+:heavy_check_mark: <b>가상환경 설정</b>
+
+- Python 3.7 이상의 버전을 우선 설치하고 아래 명령어를 입력해주세요.
 
 ```bash
 python -m venv venv
 source venv/Scripts/activate
 ```
 
-- 필요한 라이브러리 패키지 설치
+:heavy_check_mark: <b>필요한 라이브러리 패키지 설치</b>
 
 ```bash
 pip install -r requirements.txt
 ```
 
-- DB 설정(sqlite3가 설치되어 있다는 가정하에 진행할 것)
+:heavy_check_mark: <b>Database 설정</b>
+
+- sqlite3를 우선 설치하고 아래 명령어를 입력해주세요.
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-- 로컬에서 서버 실행
+:heavy_check_mark: <b>로컬에서 서버 실행</b>
 
 ```bash
 python manage.py runserver
@@ -56,7 +68,13 @@ python manage.py runserver
 
 <br>
 
-## :four: Homepage Configuration(Main Page)
+## :four: Flow Chart
+
+![flow_chart](https://user-images.githubusercontent.com/52685250/63640446-666bf780-c6db-11e9-9810-c4c675cf00a7.jpg)
+
+<br>
+
+## :five: Homepage Configuration(Main Page)
 
 :heavy_check_mark: <b>login 전 상태</b>
 
