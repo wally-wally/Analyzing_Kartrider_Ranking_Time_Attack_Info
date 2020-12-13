@@ -1,4 +1,4 @@
-# :pencil: README(written by wally-wally)
+# :pencil: README
 
 <br>
 
@@ -20,7 +20,43 @@
 
 <br>
 
-## :three: Homepage Configuration(Main Page)
+## :three: Getting Started
+
+- 소스 코드 clone 받기
+
+```bash
+git clone https://github.com/wally-wally/Analyzing_Kartrider_Ranking_Time_Attack_Info.git
+```
+
+- 가상환경 설정
+
+```bash
+python -m venv venv
+source venv/Scripts/activate
+```
+
+- 필요한 라이브러리 패키지 설치
+
+```bash
+pip install -r requirements.txt
+```
+
+- DB 설정(sqlite3가 설치되어 있다는 가정하에 진행할 것)
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+- 로컬에서 서버 실행
+
+```bash
+python manage.py runserver
+```
+
+<br>
+
+## :four: Homepage Configuration(Main Page)
 
 :heavy_check_mark: <b>login 전 상태</b>
 
@@ -72,7 +108,12 @@
 
 <br>
 
-- `2019/10/23` (ver 1.2)
+- `2019/10/23` (ver 1.2.1)
   - 추출한 데이터를 저장할 수 있는 `Data Storage` 데모 버전 구현
   - 추출한 데이터의 종류, 유저 닉네임, 채널명, 그래프를 볼 수 있으며 필요에 따라 데이터 삭제도 가능
   - 추후 데이터별 이미지를 각각 저장할 수 있도록 구현할 계획
+
+<br>
+
+- `2020/10/12` (ver 1.2.1)
+  - 카트라이더 내 차고 홈페이지 변경된 URL 주소 반영

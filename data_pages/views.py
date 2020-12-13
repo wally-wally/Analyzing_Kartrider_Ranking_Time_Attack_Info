@@ -25,15 +25,10 @@ def collect_result(request):
 
     url = f'http://kart.nexon.com/Garage/Main?strRiderID={user_nickname}'
     html = requests.get(url).text
-    soup = BeautifulSoup(html, 'html.parser')
-    tags = str(soup.select_one('#MenuButton3'))
-
-    oidUser = ''
-    for letter in tags[32:]:
-        if letter.isdecimal():
-            oidUser += letter
-        else:
-            break
+    if '라이더 정보가 없습니다.' in html:
+        result = f'{user_nickname}님의 라이더 정보가 없습니다.'
+        context = {'result': result,}
+        return render(request, 'data_pages/result.html', context)
     
     select_speed = int(speed[1])
     adjust_num = (select_speed % 4) - 1
@@ -41,7 +36,7 @@ def collect_result(request):
 
     for i in range(1, 100):
         try:
-            re_url = f'http://kart.nexon.com/Garage/Record?oidUser={oidUser}&gpage=1&tpage={i}&lc={adjust_num}'
+            re_url = f'http://kart.nexon.com/Garage/Record?strRiderID={user_nickname}&gpage=1&tpage={i}&lc={adjust_num}'
             re_html = requests.get(re_url).text
             re_soup = BeautifulSoup(re_html, 'html.parser')
         except AttributeError:
